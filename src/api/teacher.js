@@ -1,11 +1,11 @@
 import request from "@/utils/request";
 
-const TEACHER_BASE_URL = '/eduservice/teachers'
+const TEACHER_BASE_URL = "/eduservice/teachers";
 
 export function updateTeacherAPI(data) {
   return request({
-    url: `${TEACHER_BASE_URL}/${id}`,
-    method: put,
+    url: `${TEACHER_BASE_URL}`,
+    method: "put",
     data,
   });
 }

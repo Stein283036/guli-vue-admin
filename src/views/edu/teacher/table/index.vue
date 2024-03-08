@@ -1,42 +1,49 @@
 <template>
   <div class="app-container">
     <!--查询表单-->
-    <!-- <el-form :inline="true" class="demo-form-inline">
-    <el-form-item>
-      <el-input v-model="teacherQuery.name" placeholder="讲师名" />
-    </el-form-item>
+    <el-form :inline="true" class="demo-form-inline">
+      <el-form-item>
+        <el-input v-model="teacherQuery.name" placeholder="讲师姓名" />
+      </el-form-item>
 
-    <el-form-item>
-      <el-select v-model="teacherQuery.level" clearable placeholder="讲师头衔">
-        <el-option :value="1" label="高级讲师" />
-        <el-option :value="2" label="首席讲师" />
-      </el-select>
-    </el-form-item>
+      <el-form-item>
+        <el-select
+          v-model="teacherQuery.level"
+          clearable
+          placeholder="讲师头衔"
+        >
+          <el-option :value="1" label="高级讲师" />
+          <el-option :value="2" label="首席讲师" />
+        </el-select>
+      </el-form-item>
 
-    <el-form-item label="添加时间">
-      <el-date-picker
-        v-model="teacherQuery.begin"
-        type="datetime"
-        placeholder="选择开始时间"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        default-time="00:00:00"
-      />
-    </el-form-item>
-    <el-form-item>
-      <el-date-picker
-        v-model="teacherQuery.end"
-        type="datetime"
-        placeholder="选择截止时间"
-        value-format="yyyy-MM-dd HH:mm:ss"
-        default-time="00:00:00"
-      />
-    </el-form-item>
+      <el-form-item label="添加时间">
+        <el-date-picker
+          v-model="teacherQuery.begin"
+          type="datetime"
+          placeholder="选择开始时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
+      <el-form-item>
+        <el-date-picker
+          v-model="teacherQuery.end"
+          type="datetime"
+          placeholder="选择截止时间"
+          value-format="yyyy-MM-dd HH:mm:ss"
+          default-time="00:00:00"
+        />
+      </el-form-item>
 
-    <el-button type="primary" icon="el-icon-search" @click="getList()"
-      >查询</el-button
-    >
-    <el-button type="default" @click="resetData()">清空</el-button>
-  </el-form> -->
+      <el-button
+        type="primary"
+        icon="el-icon-search"
+        @click="pageTeachersWithCondition()"
+        >查询</el-button
+      >
+      <el-button type="default" @click="reset()">清空</el-button>
+    </el-form>
 
     <!-- 表格 -->
     <el-table :data="teachers" border fit highlight-current-row>
@@ -54,7 +61,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="intro" label="资历" width="350" />
+      <el-table-column prop="intro" label="资历" />
 
       <el-table-column prop="gmtCreate" label="添加时间" />
 
@@ -94,6 +101,7 @@
 
 <script>
 import {
+  pageTeachersAPI,
   pageTeachersWithConditionAPI,
   removeTeacherByIdAPI,
 } from "@/api/teacher";
@@ -115,7 +123,12 @@ export default {
 
   methods: {
     init() {
-      this.pageTeachersWithCondition();
+      this.pageTeachers();
+    },
+
+    reset() {
+      this.teacherQuery = {};
+      this.pageTeachers();
     },
 
     handleSizeChange(val) {
@@ -124,7 +137,29 @@ export default {
     },
 
     removeTeacherById(id) {
-      removeTeacherByIdAPI(id).then((res) => {});
+      console.log(id);
+      this.$confirm("此操作将永久删除, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          removeTeacherByIdAPI(id).then((res) => {
+            if (res.success) {
+              this.pageTeachers();
+              this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
 
     pageTeachersWithCondition() {
@@ -133,7 +168,13 @@ export default {
         this.size,
         this.teacherQuery
       ).then((res) => {
-        console.log(res);
+        this.teachers = res.data.records;
+        this.total = res.data.total;
+      });
+    },
+
+    pageTeachers() {
+      pageTeachersAPI(this.current, this.size).then((res) => {
         this.teachers = res.data.records;
         this.total = res.data.total;
       });
