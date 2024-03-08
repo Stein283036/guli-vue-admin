@@ -34,7 +34,26 @@
         <el-input type="textarea" v-model="teacher.intro" :rows="10"></el-input>
       </el-form-item>
 
-      <!-- 讲师头像：TODO -->
+      <!-- 讲师头像 -->
+      <el-form-item label="讲师头像" prop="avatar">
+        <pan-thumb :image="teacher.avatar" />
+        <el-button
+          type="primary"
+          icon="el-icon-upload"
+          @click="imagecropperShow = true"
+          >更换头像
+        </el-button>
+        <image-cropper
+          v-show="imagecropperShow"
+          :width="300"
+          :height="300"
+          :key="imagecropperKey"
+          :url="BASE_API + '/edu/oss/file'"
+          field="file"
+          @close="onClose"
+          @crop-upload-success="onCropUploadSuccess"
+        />
+      </el-form-item>
 
       <el-form-item>
         <el-button
@@ -50,6 +69,9 @@
 </template>
 
 <script>
+import PanThumb from "@/components/PanThumb";
+import ImageCropper from "@/components/ImageCropper";
+
 import {
   saveTeacherAPI,
   updateTeacherAPI,
@@ -57,14 +79,20 @@ import {
 } from "@/api/teacher";
 
 export default {
+  components: {
+    PanThumb,
+    ImageCropper,
+  },
+
   data() {
     return {
+      BASE_API: process.env.VUE_APP_BASE_API,
+      imagecropperKey: 0,
+      imagecropperShow: false,
+
       disabled: false,
-
       teacher: {},
-
       editFlag: false,
-
       rules: {
         name: [
           { required: true, message: "请输入讲师姓名", trigger: "blur" },
@@ -88,6 +116,16 @@ export default {
   },
 
   methods: {
+    onCropUploadSuccess(data) {
+      // console.log(data);
+      this.teacher.avatar = data.url;
+      this.imagecropperKey += 1;
+    },
+
+    onClose() {
+      this.imagecropperShow = false;
+    },
+
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
