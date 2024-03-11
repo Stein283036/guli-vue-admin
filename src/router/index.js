@@ -58,6 +58,28 @@ export const constantRoutes = [
   },
 
   {
+    path: "/subject",
+    component: Layout,
+    redirect: "/subject/table",
+    name: "Subject",
+    meta: { title: "课程分类管理", icon: "el-icon-s-help" },
+    children: [
+      {
+        path: "tree",
+        name: "Tree",
+        component: () => import("@/views/edu/subject/tree/index.vue"),
+        meta: { title: "课程分类列表", icon: "tree" },
+      },
+      {
+        path: "add",
+        name: "Add",
+        component: () => import("@/views/edu/subject/add/index.vue"),
+        meta: { title: "添加课程分类", icon: "user" },
+      },
+    ],
+  },
+
+  {
     path: "/teacher",
     component: Layout,
     redirect: "/teacher/table",
