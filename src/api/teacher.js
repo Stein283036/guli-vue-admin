@@ -46,6 +46,6 @@ export function removeTeacherByIdAPI(id) {
 
 export function listTeachersAPI() {
   return request({
-    url: "${TEACHER_BASE_URL}",
+    url: `${TEACHER_BASE_URL}`,
   });
 }

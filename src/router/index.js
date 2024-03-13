@@ -58,6 +58,49 @@ export const constantRoutes = [
   },
 
   {
+    path: "/course",
+    component: Layout,
+    redirect: "/course/table",
+    name: "Course",
+    meta: { title: "课程管理", icon: "el-icon-s-help" },
+    children: [
+      {
+        path: "table",
+        name: "Table",
+        component: () => import("@/views/edu/course/table/index.vue"),
+        meta: { title: "课程列表", icon: "table" },
+      },
+      {
+        path: "add",
+        name: "Add",
+        component: () => import("@/views/edu/course/add/info/index.vue"),
+        meta: { title: "添加课程", icon: "user" },
+      },
+      {
+        path: "info/:id",
+        name: "Info",
+        component: () => import("@/views/edu/course/add/info/index.vue"),
+        meta: { title: "编辑课程基本信息", noCache: true },
+        hidden: true,
+      },
+      {
+        path: "chapter/:id",
+        name: "Chapter",
+        component: () => import("@/views/edu/course/add/chapter/index.vue"),
+        meta: { title: "编辑课程大纲", noCache: true },
+        hidden: true,
+      },
+      {
+        path: "publish/:id",
+        name: "Publish",
+        component: () => import("@/views/edu/course/add/publish/index.vue"),
+        meta: { title: "发布课程", noCache: true },
+        hidden: true,
+      },
+    ],
+  },
+
+  {
     path: "/subject",
     component: Layout,
     redirect: "/subject/table",
