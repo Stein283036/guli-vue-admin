@@ -216,11 +216,15 @@ export default {
     },
 
     next() {
+      this.btnDisabled = true;
+
       if (this.courseInfo.id) {
         this.updateCourse();
       } else {
         this.saveCourse();
       }
+
+      this.btnDisabled = false;
     },
   },
 };
