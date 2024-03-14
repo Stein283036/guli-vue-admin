@@ -11,6 +11,14 @@ export function getCourseByIdAPI(courseId) {
   });
 }
 
+export function updateCourseAPI(data) {
+  return request({
+    url: `${COURSE_BASE_URL}`,
+    method: "put",
+    data,
+  });
+}
+
 export function saveCourseAPI(data) {
   return request({
     url: `${COURSE_BASE_URL}`,

@@ -108,7 +108,7 @@ import {
   listSubjectSecondBySubjectParentIdAPI,
 } from "@/api/subject";
 import { listTeachersAPI } from "@/api/teacher";
-import { saveCourseAPI, getCourseByIdAPI } from "@/api/course";
+import { saveCourseAPI, getCourseByIdAPI, updateCourseAPI } from "@/api/course";
 
 import Tinymce from "@/components/Tinymce";
 
@@ -193,6 +193,18 @@ export default {
       this.listSubjectSecondBySubjectParentId(subjectParentId);
     },
 
+    updateCourse() {
+      updateCourseAPI(this.courseInfo).then((res) => {
+        this.$message({
+          type: "success",
+          message: "成功修改课程基本信息",
+        });
+        this.$router.push({
+          path: `/course/chapter/${this.courseInfo.id}`,
+        });
+      });
+    },
+
     saveCourse() {
       saveCourseAPI(this.courseInfo).then((res) => {
         this.$message({
@@ -204,7 +216,11 @@ export default {
     },
 
     next() {
-      this.saveCourse();
+      if (this.courseInfo.id) {
+        this.updateCourse();
+      } else {
+        this.saveCourse();
+      }
     },
   },
 };
