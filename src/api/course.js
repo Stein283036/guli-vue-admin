@@ -2,6 +2,19 @@ import request from "@/utils/request";
 
 const COURSE_BASE_URL = "/edu/service/courses";
 
+export function publishCourseAPI(courseId) {
+  return request({
+    url: `${COURSE_BASE_URL}/publish/${courseId}`,
+    method: "post",
+  });
+}
+
+export function getCoursePublishInfoByCourseIdAPI(courseId) {
+  return request({
+    url: `${COURSE_BASE_URL}/publish/${courseId}`,
+  });
+}
+
 export function getCourseByIdAPI(courseId) {
   return request({
     url: `${COURSE_BASE_URL}`,
