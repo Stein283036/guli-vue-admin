@@ -79,7 +79,7 @@ export default {
           type: "success",
           message: "课程发布成功",
         });
-        this.$router.push({ path: "/course/table" });
+        this.$router.push({path: '/course/table'})
       });
     },
   },
