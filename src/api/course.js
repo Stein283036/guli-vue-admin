@@ -2,7 +2,7 @@ import request from "@/utils/request";
 
 const COURSE_BASE_URL = "/edu/service/courses";
 
-export function removeCourseByIdWithCascade(id) {
+export function removeCourseByIdWithCascadeAPI(id) {
   return request({
     url: `${COURSE_BASE_URL}/${id}`,
     method: "delete",

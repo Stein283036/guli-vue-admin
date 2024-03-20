@@ -82,7 +82,7 @@
 import {
   pageCoursesWithConditionAPI,
   pageCoursesAPI,
-  removeCourseByIdWithCascade,
+  removeCourseByIdWithCascadeAPI,
 } from "@/api/course";
 
 export default {
@@ -110,7 +110,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          removeCourseByIdWithCascade(id).then((res) => {
+          removeCourseByIdWithCascadeAPI(id).then((res) => {
             if (res.success) {
               this.pageCourses();
               this.$message({
